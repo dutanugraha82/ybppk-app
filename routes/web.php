@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\superadmin\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[LoginController::class,'index'])->name('login')->middleware('guest');
+Route::post('/authenticate',[LoginController::class, 'authenticate'])->name('auth');
+Route::post('/logout',[LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::get('/dashboard', function () {
-    return view('master');
+// SUPERADMIN
+Route::middleware(['superadmin','auth','revalidate'])->prefix('superadmin')->group(function (){
+    Route::get('/dashboard',[SuperAdminController::class, 'index']);
 });
