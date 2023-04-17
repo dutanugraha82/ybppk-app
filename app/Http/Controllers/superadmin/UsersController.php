@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\superadmin;
-use App\Http\Controllers\Controller;
+use DataTables;
 use App\Models\User;
 use Illuminate\Http\Request;
-use DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
 {
@@ -17,14 +18,23 @@ class UsersController extends Controller
     }
 
     public function json(){
-        $users = User::all();
+        $users = User::where('role','!=','superadmin')->get();
 
         return DataTables::of($users)
                 ->addIndexColumn()
-                ->addColumn('action', function (){
-                    return '<a class="btn btn-danger">Hapus</a>';
+                ->addColumn('action', function ($users){
+                    return '<form action="/superadmin/pengguna/'.$users->id.'" method="POST">
+                                '.csrf_field().'
+                                '.method_field("DELETE").'
+                                <button type="submit" class="btn btn-danger btn-sm d-block mx-auto" onclick="javascript: return confirm(\'Apakah anda ingin menghapus unit: '.$users->email.'?\')">
+                                    Hapus
+                                </button>
+                            </form>';
                 })
-                ->rawColumns(['action'])
+                ->addColumn('created_at', function($users){
+                    return $users['created_at'];
+                })
+                ->rawColumns(['created_at','action'])
                 ->make(true);
     }
 
@@ -90,6 +100,7 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       User::where('id','=',$id)->delete();
+       return redirect(route('superadmin.pengguna.index'));
     }
 }

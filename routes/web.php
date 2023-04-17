@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\optYayasan\OptYayasanController;
 use App\Http\Controllers\superadmin\SuperAdminController;
 use App\Http\Controllers\superadmin\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,9 @@ Route::middleware(['superadmin','auth','revalidate'])->prefix('superadmin')->nam
     Route::get('/pengguna',[UsersController::class,'index'])->name('pengguna');
     Route::get('/pengguna/json',[UsersController::class,'json'])->name('pengguna.json');
     Route::resource('pengguna', UsersController::class);
+});
+
+// OPT YAYASAN
+Route::middleware(['opt_yayasan','auth','revalidate'])->prefix('opt-yayasan')->name('opt-yayasan.')->group(function (){
+    Route::get('/dashboard',[OptYayasanController::class, 'index']);
 });
