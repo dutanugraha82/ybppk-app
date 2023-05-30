@@ -1,18 +1,22 @@
 @extends('superadmin.master')
 @section('title')
-    COA
+    create-master
+@endsection
+@section('pageTitle')
+    Create Master
 @endsection
 @section('content')
     <div class="container">
-        <form action="{{ route('superadmin.coa.store') }}" method="post">
+
+        <form class="col-8" action="{{ route('superadmin.coa.store') }}" method="post">
             @csrf
                 <div class="mb-3">
                     <label for="no_akun">No Akun</label>
-                    <input type="text" class="form-control" name="no_akun" required placeholder="ex: 1.x.xx.xx">
+                    <input type="text" class="form-control" name="no_akun" required placeholder="No Akun">
                 </div>
                 <div class="mb-3">
                     <label for="no_akun">Nama Akun</label>
-                    <input type="text" class="form-control" name="nama_akun" required placeholder="ex: Pendapatan xxxx">
+                    <input type="text" class="form-control" name="nama_akun" required placeholder="Nama Akun">
                 </div>
                 <div class="mb-3">
                     <label for="no_akun">MA</label>
@@ -24,12 +28,15 @@
                             @endforeach
                         </select>
                         <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#exampleModal">
-                        Tambah MA
+                    <button type="button" class="btn btn-primary ml-3" style="font-size: 0.9em" data-toggle="modal" data-target="#exampleModal">
+                        Add<sup>+</sup>
                     </button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-5">Submit Data</button>
+                <div class="d-flex mt-5">
+                    <a href="/superadmin/coa" style="width: 150px;" class="btn btn-warning mr-5">Kembali</a>
+                    <button type="submit" style="width: 150px" class="btn btn-primary">Submit Data</button>
+                </div>
         </form>
          <!-- Modal -->
          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

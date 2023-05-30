@@ -27,13 +27,14 @@ class COAController extends Controller
                     return '
                     <div class="d-flex">    
                             <a href="#" class="btn btn-warning" style="width:80px;">Edit</a>
-                                <form action="/superadmin/pengguna/'.$coa->id.'" method="POST">
+                                <form action="/superadmin/coa/'.$coa->id.'" method="POST">
                                 '.csrf_field().'
                                 '.method_field("DELETE").'
                                 <button style="width:80px;" type="submit" class="btn btn-danger d-block ml-3" onclick="javascript: return confirm(\'Apakah anda ingin menghapus unit: '.$coa->nama_akun.'?\')">
                                     Hapus
                                 </button>
                             </form>
+                            <a href="/superadmin/coa/sub/'.$coa->id.'" class="btn btn-primary ml-3">Add Sub</a>
                     </div>';
                 })
                 ->addColumn('updated_at', function($coa){
@@ -55,6 +56,11 @@ class COAController extends Controller
         return view('superadmin.contents.coa.create', compact('ma'));
     }
 
+    public function createSub($id){
+        $data = COA::find($id);
+        return view('superadmin.contents.coa.create-sub', compact('data'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -70,6 +76,22 @@ class COAController extends Controller
             'no_akun' => $request->no_akun,
             'nama_akun' => $request->nama_akun,
             'ma_id' => $request->ma,
+        ]);
+
+        return redirect(route('superadmin.coa.index'));
+    }
+
+    public function storeSub(Request $request){
+        $noAkun = $request->no_akun_master . '.' . $request->no_akun;
+        $request->validate([
+            'no_akun' => 'required',
+            'nama_akun' => 'required',
+            'ma_id' => 'required',
+        ]);
+        COA::create([
+            'no_akun' => $noAkun,
+            'nama_akun' => $request->nama_akun,
+            'ma_id' => $request->ma_id,
         ]);
 
         return redirect(route('superadmin.coa.index'));
@@ -102,8 +124,10 @@ class COAController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+       COA::find($id)->delete();
+       return redirect('/superadmin/coa');
+
     }
 }

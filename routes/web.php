@@ -25,6 +25,8 @@ Route::post('/logout',[LoginController::class, 'logout'])->name('logout')->middl
 
 // SUPERADMIN
 Route::middleware(['superadmin','auth','revalidate'])->prefix('superadmin')->name('superadmin.')->group(function (){
+    Route::get('/coa/sub/{id}',[COAController::class,'createSub']);
+    Route::post('/coa/sub',[COAController::class,'storeSub']);
     Route::get('/coa/json', [COAController::class,'json'])->name('coa.json');
     Route::get('/dashboard',[SuperAdminController::class, 'index']);
     Route::get('/pengguna',[UsersController::class,'index'])->name('pengguna');

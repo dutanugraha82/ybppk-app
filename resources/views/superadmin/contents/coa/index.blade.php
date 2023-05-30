@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="my-4">
-    <a class="btn btn-primary" href="{{ route('superadmin.pengguna.create') }}">Buat Akun <sup>+</sup></a>
+    <a class="btn btn-primary" href="{{ route('superadmin.coa.create') }}">Create Master<sup>+</sup></a>
 </div>
 <table class="table table-hover table-bordered" id="table-coa">
     <thead>
